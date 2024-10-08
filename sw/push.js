@@ -17,31 +17,31 @@ self.addEventListener('notificationclick', function (event) {
   event.waitUntil(clients.openWindow(event.notification.data));
 });
 
-async function initPush(serviceWorker) {
-  let publicVapidKey;
-  let subscription;
-  try {
-    res = await api.get(`${baseURL}/webpush/public-vapid-key`);
-    console.debug(res);
-    publicVapidKey = res.data;
-    console.debug('publicVapidKey', publicVapidKey);
-  } catch (err) {
-    console.log('PublicKeyError:', err.message);
-  }
-  try {
-    const { registration } = serviceWorker;
-    subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
-    });
-    console.debug('pushManager', subscription);
-  } catch (err) {
-    console.debug('No pushManager', err);
-  }
-  try {
-    const ok = await api.post(`${baseURL}/webpush/subscribe`, subscription);
-    console.log('Subscribed to Push Notifications!', ok);
-  } catch (err) {
-    console.debug('No subscribe', err);
-  }
-}
+// async function initPush(serviceWorker) {
+//   let publicVapidKey;
+//   let subscription;
+//   try {
+//     res = await api.get(`${baseURL}/webpush/public-vapid-key`);
+//     console.debug(res);
+//     publicVapidKey = res.data;
+//     console.debug('publicVapidKey', publicVapidKey);
+//   } catch (err) {
+//     console.log('PublicKeyError:', err.message);
+//   }
+//   try {
+//     const { registration } = serviceWorker;
+//     subscription = await registration.pushManager.subscribe({
+//       userVisibleOnly: true,
+//       applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+//     });
+//     console.debug('pushManager', subscription);
+//   } catch (err) {
+//     console.debug('No pushManager', err);
+//   }
+//   try {
+//     const ok = await api.post(`${baseURL}/webpush/subscribe`, subscription);
+//     console.log('Subscribed to Push Notifications!', ok);
+//   } catch (err) {
+//     console.debug('No subscribe', err);
+//   }
+// }

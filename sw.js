@@ -56,7 +56,6 @@ self.addEventListener('activate', (event) => {
         }),
       );
     }),
-    initPush(serviceWorker),
     Promise.resolve(console.debug('激活', event)),
   );
 });
