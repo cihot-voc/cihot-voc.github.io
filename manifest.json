@@ -1,14 +1,14 @@
 {
   "name": "voc",
   "short_name": "voc",
-  "start_url": "/",
-  "background_color": "#000000",
   "display": "standalone",
+  "start_url": "/",
   "display_override": [],
   "orientation": "portrait",
   "dir": "ltr",
   "scope": "/",
   "theme_color": "#000000",
+  "background_color": "#000000",
   "lang": "en-US",
   "categories": ["education", "utilities"],
   "description": "voc desktop.",
@@ -34,12 +34,14 @@
     {
       "src": "/sw/shot-400-822-1.png",
       "sizes": "400x822",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "narrow"
     },
     {
       "src": "/sw/shot-400-822-2.png",
       "sizes": "400x822",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ],
   "shortcuts": [

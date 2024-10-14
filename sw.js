@@ -23,11 +23,11 @@ const options = {
   deleteCache: true,
 };
 
-importScripts(
-  // '/sw/notification.js',
-  // '/sw/sync.js',
-  '/sw/push.js',
-);
+// importScripts(
+//   // '/sw/notification.js',
+//   // '/sw/sync.js',
+//   // '/sw/push.js',
+// );
 
 self.addEventListener('install', async (event) => {
   // console.log('安装sw');
