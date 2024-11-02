@@ -1,3 +1,9 @@
+const options = {
+  vertion: 'v2',
+  deleteCache: true,
+  style: 'color:cyan;',
+};
+
 const urlBase64ToUint8Array = (base64String) => {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
@@ -16,12 +22,8 @@ const { protocol: P, hostname: H } = location;
 const baseURL = `${P}//${H === 'localhost' ? `${H}:${P.endsWith('s:') ? 53501 : 3501}` : 'voc-be.cihot.com'}`;
 // console.debug({ baseURL });
 
-importScripts('/axios.min.js');
-const api = axios.create({ baseURL });
-
-const options = {
-  deleteCache: true,
-};
+// importScripts('/axios.min.js');
+// const api = axios.create({ baseURL });
 
 // importScripts(
 //   // '/sw/notification.js',
@@ -30,32 +32,53 @@ const options = {
 // );
 
 self.addEventListener('install', async (event) => {
-  // console.log('安装sw');
+  console.debug('%csw: install', options.style);
   // 跳过等待，立即激活新的Service Worker
   try {
     await self.skipWaiting();
-    console.debug('已跳过等待');
+    console.debug('%csw: skip waiting.', options.style);
   } catch (err) {
-    console.error('安装sw时发生错误', err);
+    console.error('sw: install error.');
   }
 });
 
 self.addEventListener('activate', (event) => {
-  const serviceWorker = event.currentTarget;
+  // const serviceWorker = event.currentTarget;
+
+  const deleteCaches = () =>
+    options.deleteCache
+      ? caches.keys().then((cacheNames) => {
+          return Promise.all(
+            cacheNames.map((cacheName) => {
+              if (cacheName !== options.vertion) {
+                console.debug(`%csw: delete cache storage. (${cacheName})`, options.style);
+                return caches.delete(cacheName);
+              }
+            }),
+          );
+        })
+      : Promise.resolve(!console.debug('%csw: skip delete cache storage.', options.style));
+
+  const openCache = () =>
+    caches.open(options.vertion).then((cache) => {
+      console.debug(`%csw: open cache storage. (${options.vertion})`, options.style);
+      return cache.addAll([
+        '/',
+        '/index.html',
+        '/favicon.ico',
+        '/manifest.json',
+        '/sw.js',
+        '/axios.min.js',
+        '/sw/notification.js',
+        '/sw/sync.js',
+        '/sw/push.js',
+      ]);
+    });
 
   // 执行激活相关的任务，比如清除旧缓存
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cache) => {
-          // 判断是否要删除旧缓存
-          if (options.deleteCache) {
-            console.debug('删除缓存', cache);
-            return caches.delete(cache);
-          }
-        }),
-      );
-    }),
-    Promise.resolve(console.debug('激活', event)),
+    deleteCaches(),
+    openCache(),
+    Promise.resolve(!console.debug(`%csw: activate. (${options.vertion})`, options.style)),
   );
 });
