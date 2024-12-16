@@ -1,0 +1,1 @@
+import{k as n,j as a,L as o}from"../web.js";function i(){const t=n();console.debug(t);const e=`/api/${Math.random().toString(36).slice(2)}`;return a.jsxs("div",{children:[a.jsx(o,{to:e,replace:Math.random()>.5,children:e}),"API ID - ",t]})}export{i as default};
