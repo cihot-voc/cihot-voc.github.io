@@ -1,0 +1,1 @@
+import{r as s,j as r}from"../web.js";import{C as u}from"./index-YURHDDc0.js";function f({channels:t,...n}){const[c,i]=s.useState([]);return s.useEffect(()=>{const e=[];for(let o=0;o<t.length;o++){const{name:p,channelId:a}=t[o];e.push({label:p,value:a})}i(e)},[t]),r.jsx("div",{children:r.jsx(u.Group,{...n,options:c})})}export{f as C};
